@@ -1,7 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 
 abstract class Repository {
-  protected _prisma: PrismaClient
+  protected _prisma: any //PrismaClient
   private _model: Lowercase<Prisma.ModelName>
 
   constructor (model: Lowercase<Prisma.ModelName>, prisma: PrismaClient) {
