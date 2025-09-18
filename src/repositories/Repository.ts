@@ -1,6 +1,5 @@
-import { Prisma, PrismaClient, User } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import prisma from "@/lib/prisma";
-import type { UserType } from "./types/Users";
 
 abstract class Repository {
   private _prisma: PrismaClient
@@ -15,11 +14,7 @@ abstract class Repository {
     return this._prisma
   }
 
-  protected async disconnect() {
-    await this._prisma.$disconnect()
-  }
-
-  protected async getFindMany (pagination?: { page: number, limit: number }): Promise<User[]> {
+  protected async getFindMany (pagination?: { page: number, limit: number }) {
     const paginationMany: { skip: number, take: number } | undefined = 
     pagination ? 
     { 
@@ -30,7 +25,7 @@ abstract class Repository {
     return await this._prisma[this._model].findMany(paginationMany)
   }
 
-  protected async getfindFirst (id: string): Promise<User | null> {
+  protected async getfindFirst (id: string) {
     return await this._prisma[this._model].findFirst({
       where: {
         id
@@ -38,7 +33,7 @@ abstract class Repository {
     })
   }
 
-  protected async getCreate (data: UserType) {
+  protected async getCreate (data: any) {
     return await this._prisma[this._model].create({
       data: {
         ...data
@@ -47,9 +42,9 @@ abstract class Repository {
   }
 
   protected async getUpdate (
-    data: UserType, 
+    data: any, 
     id: string
-  ): Promise<User> {
+  ): Promise<any> {
     return await this._prisma[this._model].update({
       where: {
         id

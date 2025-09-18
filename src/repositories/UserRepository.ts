@@ -32,15 +32,13 @@ class UserRepository extends Repository {
     await this.getDelete(id)
   }
 
-  // Exemplo de chamada customizada
-  public async search (search: SearchType): Promise<UserType & { id: string } | null> {
-    return await this._prismaCustom.user.findUnique({
+  // Exemplo funções adicionais especifico cada class
+  public async search (search: SearchType | SearchType[]): Promise<UserType & { id: string } | null> {
+    const filters = Array.isArray(search) ? search : [search]
+
+    return await this._prismaCustom.user.findFirst({
       where: {
-        name: search.name,
-        email: search.email,
-        phone: search.phone,
-        createdAt: search.createdAt,
-        updatedAt: search.updatedAt
+        OR: filters
       },
       select: {
         id: true,

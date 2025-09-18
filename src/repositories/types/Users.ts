@@ -9,3 +9,5 @@ export type SearchType = {
   createdAt?: Date
   updatedAt?: Date
 }
+
+export type Users = User
