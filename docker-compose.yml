@@ -1,0 +1,10 @@
+services:
+  postgres:
+    image: "bitnami/postgresql:latest"
+    container_name: API-REDIS
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: redis
+      POSTGRES_PASSWORD: redis
+      POSTGRES_DB: redis
