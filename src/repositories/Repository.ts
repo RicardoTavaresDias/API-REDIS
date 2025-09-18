@@ -1,20 +1,15 @@
 import { Prisma, PrismaClient } from "@prisma/client";
-import prisma from "@/lib/prisma";
 
 abstract class Repository {
-  private _prisma: PrismaClient
+  protected _prisma: PrismaClient
   private _model: Lowercase<Prisma.ModelName>
 
-  constructor (model: Lowercase<Prisma.ModelName>) {
+  constructor (model: Lowercase<Prisma.ModelName>, prisma: PrismaClient) {
     this._model = model
     this._prisma = prisma
   }
 
-  protected getPrisma () {
-    return this._prisma
-  }
-
-  protected async getFindMany (pagination?: { page: number, limit: number }) {
+  protected async _findMany (pagination?: { page: number, limit: number }) {
     const paginationMany: { skip: number, take: number } | undefined = 
     pagination ? 
     { 
@@ -25,7 +20,7 @@ abstract class Repository {
     return await this._prisma[this._model].findMany(paginationMany)
   }
 
-  protected async getfindFirst (id: string) {
+  protected async _findFirst (id: string) {
     return await this._prisma[this._model].findFirst({
       where: {
         id
@@ -33,7 +28,7 @@ abstract class Repository {
     })
   }
 
-  protected async getCreate (data: any) {
+  protected async _create (data: any) {
     return await this._prisma[this._model].create({
       data: {
         ...data
@@ -41,7 +36,7 @@ abstract class Repository {
     })
   }
 
-  protected async getUpdate (
+  protected async _update (
     data: any, 
     id: string
   ): Promise<any> {
@@ -55,7 +50,7 @@ abstract class Repository {
     })
   }
 
-  protected async getDelete (id: string): Promise<void> {
+  protected async _delete (id: string): Promise<void> {
     await this._prisma[this._model].delete({
       where: {
         id

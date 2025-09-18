@@ -1,42 +1,40 @@
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import { Repository } from "./Repository"
 import type { SearchType, UserType } from "./types/Users";
+import prisma from "@/lib/prisma";
 
 class UserRepository extends Repository {
-  private _prismaCustom: PrismaClient
-
   constructor () {
-    super("user")
-    this._prismaCustom = this.getPrisma()
+    super("user", prisma)
   }
   
   public async getAll (): Promise<User[]> {
     // Teste de paginação no findMany
     const pagination = { page: 2, limit: 5 }
-    return await this.getFindMany()
+    return await this._findMany()
   }
 
   public async getById (id: string): Promise<User | null> {
-    return await this.getfindFirst(id)
+    return await this._findFirst(id)
   }
 
   public async create (data: UserType): Promise<User> {
-    return await this.getCreate(data)
+    return await this._create(data)
   }
 
   public async update (data: UserType, id: string): Promise<UserType> {
-    return await this.getUpdate(data, id)
+    return await this._update(data, id)
   }
 
   public async remove (id: string): Promise<void> {
-    await this.getDelete(id)
+    await this._delete(id)
   }
 
   // Exemplo funções adicionais especifico cada class
   public async search (search: SearchType | SearchType[]): Promise<UserType & { id: string } | null> {
     const filters = Array.isArray(search) ? search : [search]
 
-    return await this._prismaCustom.user.findFirst({
+    return await this._prisma.user.findFirst({
       where: {
         OR: filters
       },
