@@ -1,17 +1,54 @@
-import { User } from "@prisma/client";
-import { Repository } from "./Repository";
+import { PrismaClient, User } from "@prisma/client";
+import { Repository } from "./Repository"
+import type { SearchType, UserType } from "./types/Users";
 
 class UserRepository extends Repository {
+  private _prismaCustom: PrismaClient
+
   constructor () {
-    super()
+    super("user")
+    this._prismaCustom = this.getPrisma()
   }
   
   public async getUsers (): Promise<User[]> {
-    return await this.findMany("user")
+    // Teste de paginação no findMany
+    const pagination = { page: 2, limit: 5 }
+    return await this.getFindMany()
   }
 
-  public async getByUser (id: string): Promise<User> {
-    return await this.findFirst('user', id)
+  public async getByUser (id: string): Promise<User | null> {
+    return await this.getfindFirst(id)
+  }
+
+  public async createUser (data: UserType): Promise<User> {
+    return await this.getCreate(data)
+  }
+
+  public async updateUser (data: UserType, id: string): Promise<UserType> {
+    return await this.getUpdate(data, id)
+  }
+
+  public async removeUser (id: string): Promise<void> {
+    await this.getDelete(id)
+  }
+
+  // Exemplo de chamada customizada
+  public async search (search: SearchType): Promise<UserType & { id: string } | null> {
+    return await this._prismaCustom.user.findUnique({
+      where: {
+        name: search.name,
+        email: search.email,
+        phone: search.phone,
+        createdAt: search.createdAt,
+        updatedAt: search.updatedAt
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        phone: true,
+      }
+    })
   }
 }
 
