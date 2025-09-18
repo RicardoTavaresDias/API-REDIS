@@ -1,11 +1,11 @@
-import { User } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import { Repository } from "./Repository"
 import type { SearchType, UserType } from "./types/Users";
 import prisma from "@/lib/prisma";
 
 class UserRepository extends Repository {
   constructor () {
-    super("user", prisma)
+    super(prisma.user)
   }
   
   public async getAll (): Promise<User[]> {

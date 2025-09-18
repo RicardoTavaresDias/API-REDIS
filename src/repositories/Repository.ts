@@ -2,10 +2,8 @@ import { Prisma, PrismaClient } from "@prisma/client";
 
 abstract class Repository {
   protected _prisma: any //PrismaClient
-  private _model: Lowercase<Prisma.ModelName>
 
-  constructor (model: Lowercase<Prisma.ModelName>, prisma: PrismaClient) {
-    this._model = model
+  constructor (prisma: any) {
     this._prisma = prisma
   }
 
@@ -17,11 +15,11 @@ abstract class Repository {
       take: pagination.limit
     } : undefined
 
-    return await this._prisma[this._model].findMany(paginationMany)
+    return await this._prisma.findMany(paginationMany)
   }
 
   protected async _findFirst (id: string) {
-    return await this._prisma[this._model].findFirst({
+    return await this._prisma.findFirst({
       where: {
         id
       }
@@ -29,7 +27,7 @@ abstract class Repository {
   }
 
   protected async _create (data: any) {
-    return await this._prisma[this._model].create({
+    return await this._prisma.create({
       data: {
         ...data
       }
@@ -40,7 +38,7 @@ abstract class Repository {
     data: any, 
     id: string
   ): Promise<any> {
-    return await this._prisma[this._model].update({
+    return await this._prisma.update({
       where: {
         id
       },
@@ -51,7 +49,7 @@ abstract class Repository {
   }
 
   protected async _delete (id: string): Promise<void> {
-    await this._prisma[this._model].delete({
+    await this._prisma.delete({
       where: {
         id
       }

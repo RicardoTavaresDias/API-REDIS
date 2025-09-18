@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 
 class ProductRepository extends Repository {
   constructor () {
-    super("product", prisma)
+    super(prisma.product)
   }
 
   public async getAll(): Promise<Product[]> {
