@@ -11,7 +11,7 @@ class UserController {
 
   getUserAll = async  (request: Request, response: Response) => {
     try {
-      const result = await this.userRepository.getUsers()
+      const result = await this.userRepository.getAll()
 
       response.status(200).json(result)
     } catch (error) {
@@ -27,7 +27,7 @@ class UserController {
         response.status(400).json({ message: idUser.error.flatten().fieldErrors })
       }
 
-      const result = await this.userRepository.getByUser(request.params.id)
+      const result = await this.userRepository.getById(request.params.id)
 
       response.status(200).json(result)
     } catch (error) {

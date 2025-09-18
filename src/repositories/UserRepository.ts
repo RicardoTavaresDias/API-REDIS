@@ -10,25 +10,25 @@ class UserRepository extends Repository {
     this._prismaCustom = this.getPrisma()
   }
   
-  public async getUsers (): Promise<User[]> {
+  public async getAll (): Promise<User[]> {
     // Teste de paginação no findMany
     const pagination = { page: 2, limit: 5 }
     return await this.getFindMany()
   }
 
-  public async getByUser (id: string): Promise<User | null> {
+  public async getById (id: string): Promise<User | null> {
     return await this.getfindFirst(id)
   }
 
-  public async createUser (data: UserType): Promise<User> {
+  public async create (data: UserType): Promise<User> {
     return await this.getCreate(data)
   }
 
-  public async updateUser (data: UserType, id: string): Promise<UserType> {
+  public async update (data: UserType, id: string): Promise<UserType> {
     return await this.getUpdate(data, id)
   }
 
-  public async removeUser (id: string): Promise<void> {
+  public async remove (id: string): Promise<void> {
     await this.getDelete(id)
   }
 
