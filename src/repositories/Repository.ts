@@ -53,7 +53,12 @@ abstract class Repository<Imodel, T, D> implements IRepository<T, D> {
     })
   }
 
-  delete (id: string): Promise<T> {
+  async delete (id: string): Promise<void> {
+    const userExist = await this.findFirst(id)
+    if(!userExist) {
+      throw new Error("Não encontrado.");
+    }
+
     //@ts-ignore
     return this._model.delete({
       where: {
