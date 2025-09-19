@@ -1,13 +1,14 @@
-import { Prisma, PrismaClient } from "@prisma/client";
+import { IRepository } from "./IRepository"
+import { PaginationType } from "./IRepository"
 
-abstract class Repository {
-  protected _prisma: any //PrismaClient
+abstract class Repository<Imodel, T, D> implements IRepository<T, D> {
+  protected _model: Imodel
 
-  constructor (prisma: any) {
-    this._prisma = prisma
+  constructor (prisma: Imodel) {
+    this._model = prisma
   }
 
-  protected async _findMany (pagination?: { page: number, limit: number }) {
+  findMany (pagination?: PaginationType): Promise<T[]>{
     const paginationMany: { skip: number, take: number } | undefined = 
     pagination ? 
     { 
@@ -15,30 +16,34 @@ abstract class Repository {
       take: pagination.limit
     } : undefined
 
-    return await this._prisma.findMany(paginationMany)
+    //@ts-ignore
+    return this._model.findMany(paginationMany)
   }
 
-  protected async _findFirst (id: string) {
-    return await this._prisma.findFirst({
+  findFirst (id: string): Promise<T> {
+    //@ts-ignore
+    return this._model.findFirst({
       where: {
         id
       }
     })
   }
 
-  protected async _create (data: any) {
-    return await this._prisma.create({
+  create (data: D): Promise<T> {
+    //@ts-ignore
+    return this._model.create({
       data: {
         ...data
       }
     })
   }
 
-  protected async _update (
-    data: any, 
+  update (
+    data: Partial<D>, 
     id: string
-  ): Promise<any> {
-    return await this._prisma.update({
+  ): Promise<T> {
+    //@ts-ignore
+    return this._model.update({
       where: {
         id
       },
@@ -48,8 +53,9 @@ abstract class Repository {
     })
   }
 
-  protected async _delete (id: string): Promise<void> {
-    await this._prisma.delete({
+  delete (id: string): Promise<void> {
+    //@ts-ignore
+    return this._model.delete({
       where: {
         id
       }

@@ -11,7 +11,8 @@ class UserController {
 
   getUserAll = async  (request: Request, response: Response) => {
     try {
-      const result = await this.userRepository.getAll()
+      const pagination = { page: 2, limit: 5 }
+      const result = await this.userRepository.findMany(pagination)
 
       response.status(200).json(result)
     } catch (error) {
@@ -27,7 +28,7 @@ class UserController {
         response.status(400).json({ message: idUser.error.flatten().fieldErrors })
       }
 
-      const result = await this.userRepository.getById(request.params.id)
+      const result = await this.userRepository.findFirst(request.params.id)
 
       response.status(200).json(result)
     } catch (error) {
