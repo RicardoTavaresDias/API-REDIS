@@ -2,7 +2,7 @@ import { IRepository } from "./IRepository"
 import { PaginationType } from "./IRepository"
 
 abstract class Repository<Imodel, T, D> implements IRepository<T, D> {
-  protected _model: Imodel
+  protected readonly _model: Imodel
 
   constructor (prisma: Imodel) {
     this._model = prisma
@@ -20,7 +20,7 @@ abstract class Repository<Imodel, T, D> implements IRepository<T, D> {
     return this._model.findMany(paginationMany)
   }
 
-  findFirst (id: string): Promise<T> {
+  async findFirst (id: string): Promise<T | null> {
     //@ts-ignore
     return this._model.findFirst({
       where: {
@@ -53,7 +53,7 @@ abstract class Repository<Imodel, T, D> implements IRepository<T, D> {
     })
   }
 
-  delete (id: string): Promise<void> {
+  delete (id: string): Promise<T> {
     //@ts-ignore
     return this._model.delete({
       where: {

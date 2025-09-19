@@ -29,6 +29,9 @@ class UserController {
       }
 
       const result = await this.userRepository.findFirst(request.params.id)
+      if(!result) {
+        response.status(400).json({ message: "Usuario não encontrado." })
+      }
 
       response.status(200).json(result)
     } catch (error) {

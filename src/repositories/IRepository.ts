@@ -4,7 +4,7 @@ export interface IRepository<T, D> {
   findFirst (id: string): Promise<T | null>
   create(data: D): Promise<T>
   update(data: Partial<D>, id: string): Promise<T>
-  delete(id: string): Promise<void>
+  delete(id: string): Promise<T>
 }
 
 export interface PaginationType {
