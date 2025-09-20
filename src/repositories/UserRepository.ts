@@ -1,9 +1,9 @@
-import { User } from "@prisma/client";
+import { Prisma, User } from "@prisma/client";
 import { Repository } from "./Repository"
 import prisma from "@/lib/prisma";
 import { SearchType, Tsearch, UserType } from "@/types/TUsers";
 
-class UserRepository extends Repository<typeof prisma.user, User, UserType> {
+class UserRepository extends Repository<Prisma.UserDelegate, User, UserType> {
   constructor () {
     super(prisma.user)
   }

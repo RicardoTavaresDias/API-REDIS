@@ -1,9 +1,8 @@
-import { IRepository } from "./interface/IRepository"
+import { Delegate, IRepository } from "./interface/IRepository"
 import { PaginationType } from "./interface/IRepository"
 
-abstract class Repository<Imodel, T, D> implements IRepository<T, D> {
+abstract class Repository<Imodel extends Delegate, T, D> implements IRepository<T, D> {
   protected readonly _model: Imodel
-
   constructor (prisma: Imodel) {
     this._model = prisma
   }

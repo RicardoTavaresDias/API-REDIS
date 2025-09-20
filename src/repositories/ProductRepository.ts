@@ -1,9 +1,9 @@
-import { Product, User } from "@prisma/client";
+import { Prisma, Product, User } from "@prisma/client";
 import { Repository } from "./Repository";
 import prisma from "@/lib/prisma";
 import { ListProductUserType, ProductType } from "@/types/TProducts";
 
-class ProductRepository extends Repository<typeof prisma.product, Product, ProductType> {
+class ProductRepository extends Repository<Prisma.ProductDelegate, Product, ProductType> {
   constructor () {
     super(prisma.product)
   }
