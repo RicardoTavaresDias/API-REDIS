@@ -5,6 +5,8 @@ const productRouter = Router()
 const productController = new ProductController()
 
 productRouter.get("/", productController.get)
+productRouter.get("/User-products", productController.listProduct)
+
 productRouter.get("/:id", productController.getById)
 productRouter.post("/", productController.create)
 productRouter.patch("/:id", productController.update)

@@ -1,5 +1,5 @@
-import { IRepository } from "./IRepository"
-import { PaginationType } from "./IRepository"
+import { IRepository } from "./interface/IRepository"
+import { PaginationType } from "./interface/IRepository"
 
 abstract class Repository<Imodel, T, D> implements IRepository<T, D> {
   protected readonly _model: Imodel

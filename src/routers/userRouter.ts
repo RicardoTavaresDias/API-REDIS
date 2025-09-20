@@ -5,6 +5,8 @@ const userRouter = Router()
 const userController = new UserController()
 
 userRouter.get("/", userController.get)
+userRouter.get("/search", userController.searchUser)
+
 userRouter.get("/:id", userController.getById)
 userRouter.post("/", userController.create)
 userRouter.patch("/:id", userController.update)

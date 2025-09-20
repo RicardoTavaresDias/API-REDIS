@@ -30,10 +30,10 @@ model Product {
   name            String
   description     String
   price           String
-  fkUser          String           @map("fk_user")
+  fkUser          String?           @map("fk_user")
   createdAt       DateTime         @default(now()) @map("created_at")
   updatedAt       DateTime         @updatedAt @map("updated_at")
-  user            User             @relation(fields: [fkUser], references: [id], onDelete: Cascade)
+  user            User?             @relation(fields: [fkUser], references: [id], onDelete: Cascade)
 
   @@map("product")
 }

@@ -1,13 +1,7 @@
 import { Product, User } from "@prisma/client";
 import { Repository } from "./Repository";
 import prisma from "@/lib/prisma";
-
-type ProductType = Omit<Product, "id" | "createdAt" | "updatedAt">
-
-type ListProductUserType = {
-  user: User
-  products: Product[]
-}
+import { ListProductUserType, ProductType } from "@/types/TProducts";
 
 class ProductRepository extends Repository<typeof prisma.product, Product, ProductType> {
   constructor () {
@@ -24,7 +18,7 @@ class ProductRepository extends Repository<typeof prisma.product, Product, Produ
       }
     })
 
-    const user = result[0].user
+    const user = result[0].user as User
     const products = result.map(product => {
       const { user, ...productsData } = product
       return productsData
