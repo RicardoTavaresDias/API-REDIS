@@ -14,7 +14,7 @@ abstract class Controller<T, D, IUpdate, ICreate>{
     this.createSchema = createSchema
   }
 
-  get = async (request: Request, response: Response) => {
+  public get = async (request: Request, response: Response) => {
     try {
       const pagination = { page: 2, limit: 5 }
       const result = await this.repository.findMany(pagination)
@@ -26,7 +26,7 @@ abstract class Controller<T, D, IUpdate, ICreate>{
     }
   }
 
-  getById = async (request: Request, response: Response) => {
+  public getById = async (request: Request, response: Response) => {
     try {
       const id = IdParams.safeParse(request.params)
       if (!id.success) {
@@ -45,7 +45,7 @@ abstract class Controller<T, D, IUpdate, ICreate>{
     }
   }
 
-  create = async (request : Request, response: Response) => {
+  public create = async (request : Request, response: Response) => {
     try {
       const create = this.createSchema.safeParse(request.body)
       if (!create.success) {
@@ -60,7 +60,7 @@ abstract class Controller<T, D, IUpdate, ICreate>{
     }
   }
 
-  update = async (request : Request, response: Response) => {
+  public update = async (request : Request, response: Response) => {
     try {
       const id = IdParams.safeParse(request.params)
       if (!id.success) {
@@ -80,7 +80,7 @@ abstract class Controller<T, D, IUpdate, ICreate>{
     }
   }
 
-  remove = async (request : Request, response: Response) => {
+  public remove = async (request : Request, response: Response) => {
     try {
        const id = IdParams.safeParse(request.params)
       if (!id.success) {

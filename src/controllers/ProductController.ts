@@ -13,7 +13,7 @@ class ProductController extends Controller<Product, ProductType, TUpdateProduct,
     this.repositoryProduct = new ProductRepository()
   }
 
-  listProduct = async (request: Request, response: Response) => {
+  public listProduct = async (request: Request, response: Response) => {
     try {
       const result = await this.repositoryProduct.listProductsUser('000b5c0f-1baa-4fe4-abcf-2dde8453f252')
       response.status(200).json(result)

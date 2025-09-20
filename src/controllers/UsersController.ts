@@ -13,7 +13,7 @@ class UserController extends Controller<User, UserType, TUpdateUserUser,ICreateU
     this.repositoryUser = new UserRepository()
   }
 
-  searchUser = async (request: Request, response: Response) => {
+  public searchUser = async (request: Request, response: Response) => {
     try {
       const result = await this.repositoryUser.search({ name: "sfgsghfdg" })
       if(!result?.length) {
