@@ -1,10 +1,27 @@
 services:
   postgres:
-    image: "bitnami/postgresql:latest"
-    container_name: API-REDIS
+    image: bitnami/postgresql:latest
+    container_name: api-postgres
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: redis
-      POSTGRES_PASSWORD: redis
-      POSTGRES_DB: redis
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres_data:/bitnami/postgresql
+
+  redis:
+    image: redis:latest
+    container_name: api-redis
+    ports:
+      - "6379:6379"
+    environment:
+      REDIS_PASSWORD: "redis"   # define a senha
+    command: ["redis-server", "--requirepass", "redis"]
+    volumes:
+      - redis_data:/data
+
+volumes:
+  postgres_data:
+  redis_data:
