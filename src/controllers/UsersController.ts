@@ -5,7 +5,7 @@ import { User } from "@prisma/client"
 import { dataUpdateUser, type TUpdateUserUser, dataCreateUser, type ICreateUser } from "@/schemas/userSchemas"
 import { UserRepository } from "@/repositories/UserRepository"
 
-class UserController extends Controller<User, UserType, TUpdateUserUser,ICreateUser> {
+class UserController extends Controller<User, UserType, TUpdateUserUser, ICreateUser> {
   private repositoryUser: UserRepository
 
   constructor () {
