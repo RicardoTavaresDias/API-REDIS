@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { ProductRepository } from "@/repositories/ProductRepository"
 import { Controller } from "./Controller";
 import { Product } from "@prisma/client";
-import { dataUpdateProduct, type TUpdateProduct, dataCreateProduct, type ICreateProduct } from "@/schemas/porductSchemas";
+import { dataUpdateProduct, type TUpdateProduct, dataCreateProduct, type ICreateProduct, nameUSerSchema, type NameUserType } from "@/schemas/porductSchemas";
 import { ProductType } from "@/types/TProducts";
 
 class ProductController extends Controller<Product, ProductType, TUpdateProduct, ICreateProduct> {
@@ -15,10 +15,20 @@ class ProductController extends Controller<Product, ProductType, TUpdateProduct,
 
   public listProduct = async (request: Request, response: Response) => {
     try {
-      const result = await this.repositoryProduct.listProductsUser('000b5c0f-1baa-4fe4-abcf-2dde8453f252')
+      const nameSchema = nameUSerSchema.safeParse(request.query)
+      if (!nameSchema.success) {
+        return response.status(400).json({ message: nameSchema.error.flatten().fieldErrors })
+      }
+
+      const { name } = nameSchema.data as NameUserType
+
+      const result = await this.repositoryProduct.listProductsUser(name)
       response.status(200).json(result)
     } catch (error) {
-      console.log(error)
+      if (error instanceof Error) {
+        return response.status(404).json({ message: error.message })
+      }
+      
       response.status(500).json({ message: error })
     }
   }

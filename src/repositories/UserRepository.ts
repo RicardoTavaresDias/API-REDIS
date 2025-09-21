@@ -27,16 +27,6 @@ class UserRepository extends Repository<Prisma.UserDelegate, User, UserType> {
             phone: {
               contains: filters[0].phone
             }
-          } : {},
-          filters[0].createdAt ? {
-            createdAt: {
-              equals: filters[0].createdAt
-            }
-          } : {},
-          filters[0].updatedAt ? {
-            updatedAt: {
-              equals: filters[0].updatedAt
-            }
           } : {}
         ]
       },

@@ -10,3 +10,11 @@ export type TUpdateUserUser = z.infer<typeof dataUpdateUser>
 
 export const dataCreateUser = dataUpdateUser.required()
 export type ICreateUser = z.infer<typeof dataCreateUser>
+
+export const searchUserSchema = z.object({
+  name: z.string().optional(),
+  email: z.string().optional(),
+  phone: z.string().optional()
+})
+
+export type SearchSchema = z.infer<typeof searchUserSchema>

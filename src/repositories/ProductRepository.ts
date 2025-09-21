@@ -8,22 +8,30 @@ class ProductRepository extends Repository<Prisma.ProductDelegate, Product, Prod
     super(prisma.product)
   }
 
-  public async listProductsUser (id: string): Promise<ListProductUserType> {
+  public async listProductsUser (nameUSer: string): Promise<ListProductUserType> {
     const result = await this._model.findMany({
-      where: {
-        fkUser: id
+      where: { 
+        user: { 
+          name: { 
+            contains: nameUSer 
+          } 
+        } 
       },
-      include: {
-        user: true
+      include: { 
+        user: true 
       }
     })
+
+    if (result.length === 0) {
+      throw new Error("Usuario não encontrado para lista produtos")
+    }
 
     const user = result[0].user as User
     const products = result.map(product => {
       const { user, ...productsData } = product
       return productsData
     })
-
+   
     return { user, products }
   }
 }

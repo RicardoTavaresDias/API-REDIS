@@ -10,3 +10,9 @@ export type TUpdateProduct = z.infer<typeof dataUpdateProduct>
 
 export const dataCreateProduct = dataUpdateProduct.required()
 export type ICreateProduct = z.infer<typeof dataCreateProduct>
+
+export const nameUSerSchema = z.object({
+  name: z.string().min(1)
+})
+
+export type NameUserType = z.infer<typeof nameUSerSchema>

@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { UserType } from "@/types/TUsers"
 import { Controller } from "./Controller"
 import { User } from "@prisma/client"
-import { dataUpdateUser, type TUpdateUserUser, dataCreateUser, type ICreateUser } from "@/schemas/userSchemas"
+import { dataUpdateUser, type TUpdateUserUser, dataCreateUser, type ICreateUser, searchUserSchema } from "@/schemas/userSchemas"
 import { UserRepository } from "@/repositories/UserRepository"
 
 class UserController extends Controller<User, UserType, TUpdateUserUser, ICreateUser> {
@@ -15,7 +15,13 @@ class UserController extends Controller<User, UserType, TUpdateUserUser, ICreate
 
   public searchUser = async (request: Request, response: Response) => {
     try {
-      const result = await this.repositoryUser.search({ name: "sfgsghfdg" })
+      const searchSchema = searchUserSchema.safeParse(request.query)
+      if (!searchSchema.success) {
+        return response.status(400).json({ message: searchSchema.error.flatten().fieldErrors })
+      }
+
+      const result = await this.repositoryUser.search(searchSchema.data)
+      console.log(result)
       if(!result?.length) {
         return response.status(400).json({ message: "Usuario não encontrado." })
       }
