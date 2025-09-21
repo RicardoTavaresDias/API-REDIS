@@ -64,12 +64,14 @@ npm install pg
 
 ### 2️⃣ Conexão com Redis
 
+config/redis.ts
+
 ````ts
 // redisClient.ts
 import { createClient } from "redis"
 
 const redisClient = createClient({
-  url: "redis://:redis@localhost:6379"
+  url: "redis://:password@localhost:6379"
 })
 
 redisClient.on("error", (err) => console.error("Redis Client Error", err))
@@ -78,7 +80,6 @@ redisClient.on("ready", () => console.log("Redis pronto para uso!"))
 
 async function connectRedis() {
   await redisClient.connect()
-  console.log("Redis conectado com sucesso!")
 }
 
 export { redisClient, connectRedis }
@@ -90,8 +91,19 @@ Nota: o formato da URL é redis://:SENHA@HOST:PORT.
 
 ### 3️⃣ Exemplo de uso do Redis
 
+server.ts
+
 ````ts
-import { redisClient, connectRedis } from "@/config/redis"
+app.listen(env.PORT, () => {
+  connectRedis()
+  console.log(`Server in running port ${env.PORT}`) 
+})
+````
+
+cache/index.ts
+
+````ts
+import { redisClient } from "@/config/redis"
 
 connectRedis()
 
