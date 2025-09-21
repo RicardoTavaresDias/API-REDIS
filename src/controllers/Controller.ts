@@ -3,12 +3,14 @@ import { IdParams } from "@/schemas";
 import { Request, Response } from "express";
 import { ZodSchema } from "zod";
 
+type RepositoryClass<T, D> = new () => IRepository<T, D>
+
 abstract class Controller<T, D, IUpdate, ICreate>{
   private readonly repository: IRepository<T, D>
   private readonly updateSchema: ZodSchema<IUpdate>
   private readonly createSchema: ZodSchema<ICreate>
 
-  constructor(repository: any, updateSchema: ZodSchema<IUpdate>, createSchema: ZodSchema<ICreate>) {
+  constructor(repository: RepositoryClass<T, D>, updateSchema: ZodSchema<IUpdate>, createSchema: ZodSchema<ICreate>) {
     this.repository = new repository()
     this.updateSchema = updateSchema
     this.createSchema = createSchema
