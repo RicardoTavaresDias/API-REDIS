@@ -109,7 +109,7 @@ connectRedis()
 
 async function redisSet("chave", "valor") {
   // Setando valor
-  await redisClient.set("chave", JSON.stringify("valor"), { "EX": 500 })
+  await redisClient.set("chave", JSON.stringify("valor"), { "EX": 30 })
 }
 
 async function redisGet("chave") {
@@ -162,6 +162,18 @@ getUsers();
 ````
 
 ----
-<br>
 
-✅ Com isso você consegue usar Redis como cache ou armazenamento rápido, e PostgreSQL como banco relacional tradicional, tudo em Node.js.
+### 💡 Cache nativo Nodejs
+
+````ts
+const cache = new Map()
+
+if(!cache.has("chave")) {
+  cache.set("chave", [{ name: request.query.name }])
+  setTimeout(() => cache.delete("chave"), 1 * 60 * 1000)  // Time de 1m
+  return console.log(cache.get("chave"))
+}
+
+cache.get("chave").push({ name: request.query.name })
+return console.log(cache.get("chave"))
+````
