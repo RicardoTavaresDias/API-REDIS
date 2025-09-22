@@ -1,8 +1,8 @@
 import { Request, Response } from "express"
-import { ProductRepository } from "@/repositories/ProductRepository"
+import { ProductRepository } from "@/repositories/Product-repository"
 import { Controller } from "./Controller";
 import { Product } from "@prisma/client";
-import { dataUpdateProduct, type TUpdateProduct, dataCreateProduct, type ICreateProduct, nameUSerSchema, type NameUserType } from "@/schemas/porductSchemas";
+import { dataUpdateProduct, type TUpdateProduct, dataCreateProduct, type ICreateProduct, nameUSerSchema, type NameUserType } from "@/schemas/porduct-schemas";
 import { ProductType } from "@/types/TProducts";
 
 class ProductController extends Controller<Product, ProductType, TUpdateProduct, ICreateProduct> {

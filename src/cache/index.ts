@@ -1,8 +1,8 @@
 import { redisClient } from "@/config/redis"
 
-async function redisSet <T> (key: string, data: T): Promise<void> {
+async function redisSet <T> (key: string, data: T, time: number = 120): Promise<void> {
   // Setando valor
-  await redisClient.set(key, JSON.stringify(data), { "EX": 120 })
+  await redisClient.set(key, JSON.stringify(data), { "EX": time })
 }
 
 async function redisGet <T> (key: string): Promise<T | null> {
