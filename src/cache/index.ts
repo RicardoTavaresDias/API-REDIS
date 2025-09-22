@@ -12,7 +12,7 @@ async function redisGet <T> (key: string): Promise<T | null> {
     return null
   }
 
-  console.log("Usuário do Redis:", JSON.parse(usuario))
+  //console.log("Usuário do Redis:", JSON.parse(usuario))
   return JSON.parse(usuario) as T
 }
 

@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 
 export interface IRepository<T, D> {
-  findMany (pagination?: { page: number; limit: number }): Promise<T[]>
+  findMany (host: string, pagination?: PaginationType): Promise<T[]>
   findFirst (id: string): Promise<T | null>
   create(data: D): Promise<T>
   update(data: Partial<D>, id: string): Promise<T>
