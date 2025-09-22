@@ -17,87 +17,59 @@ abstract class Controller<T, D, IUpdate, ICreate>{
   }
 
   public get = async (request: Request, response: Response) => {
-    try {
-      const pagination = { page: 2, limit: 5 }
-      const result = await this.repository.findMany(pagination)
+    const pagination = { page: 2, limit: 5 }
+    const result = await this.repository.findMany(pagination)
 
-      response.status(200).json(result)
-    } catch (error) {
-      console.log(error)
-      response.status(500).json({ message: error })
-    }
+    response.status(200).json(result)
   }
 
   public getById = async (request: Request, response: Response) => {
-    try {
-      const id = IdParams.safeParse(request.params)
-      if (!id.success) {
-        response.status(400).json({ message: id.error.flatten().fieldErrors })
-      }
-
-      const result = await this.repository.findFirst(id.data!.id)
-      if(!result) {
-        response.status(400).json({ message: "Não encontrado." })
-      }
-
-      response.status(200).json(result)
-    } catch (error) {
-      console.log(error)
-      response.status(500).json({ message: error })
+    const id = IdParams.safeParse(request.params)
+    if (!id.success) {
+      response.status(400).json({ message: id.error.flatten().fieldErrors })
     }
+
+    const result = await this.repository.findFirst(id.data!.id)
+    if(!result) {
+      response.status(400).json({ message: "Não encontrado." })
+    }
+
+    response.status(200).json(result)
   }
 
   public create = async (request : Request, response: Response) => {
-    try {
-      const create = this.createSchema.safeParse(request.body)
-      if (!create.success) {
-        response.status(400).json({ message: create.error.flatten()!.fieldErrors })
-      }
-   
-      const result = await this.repository.create(create.data as D)
-      response.status(201).json(result)
-    } catch (error) {
-      console.log(error)
-      response.status(500).json({ message: error })
+    const create = this.createSchema.safeParse(request.body)
+    if (!create.success) {
+      response.status(400).json({ message: create.error.flatten()!.fieldErrors })
     }
+  
+    const result = await this.repository.create(create.data as D)
+    response.status(201).json(result)
   }
 
   public update = async (request : Request, response: Response) => {
-    try {
-      const id = IdParams.safeParse(request.params)
-      if (!id.success) {
-        response.status(400).json({ message: id.error.flatten().fieldErrors })
-      }
-
-      const update = this.updateSchema.safeParse(request.body)
-      if (!update.success) {
-        response.status(400).json({ message: update.error.flatten()!.fieldErrors })
-      }
-
-      const result = await this.repository.update(update.data as D, id.data!.id)
-      response.status(200).json(result)      
-    } catch (error) {
-      console.log(error)
-      response.status(500).json({ message: error })
+    const id = IdParams.safeParse(request.params)
+    if (!id.success) {
+      response.status(400).json({ message: id.error.flatten().fieldErrors })
     }
+
+    const update = this.updateSchema.safeParse(request.body)
+    if (!update.success) {
+      response.status(400).json({ message: update.error.flatten()!.fieldErrors })
+    }
+
+    const result = await this.repository.update(update.data as D, id.data!.id)
+    response.status(200).json(result)      
   }
 
   public remove = async (request : Request, response: Response) => {
-    try {
-       const id = IdParams.safeParse(request.params)
-      if (!id.success) {
-        response.status(400).json({ message: id.error.flatten().fieldErrors })
-      }
-
-      await this.repository.delete(id.data!.id)
-      response.status(200).json()
-    } catch (error) {
-      if (error instanceof Error) {
-        response.status(400).json({ message: error.message })
-      }
-
-      response.status(500).json({ message: error })
+    const id = IdParams.safeParse(request.params)
+    if (!id.success) {
+      response.status(400).json({ message: id.error.flatten().fieldErrors })
     }
+
+    await this.repository.delete(id.data!.id)
+    response.status(200).json()
   }
 }
 

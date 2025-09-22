@@ -1,3 +1,4 @@
+import { AppError } from "@/utils/AppError"
 import { Delegate, IRepository } from "./interface/IRepository"
 import { PaginationType } from "./interface/IRepository"
 
@@ -55,7 +56,7 @@ abstract class Repository<Imodel extends Delegate, T, D> implements IRepository<
   async delete (id: string): Promise<void> {
     const userExist = await this.findFirst(id)
     if(!userExist) {
-      throw new Error("Não encontrado.");
+      throw new AppError("Não encontrado.", 404);
     }
 
     //@ts-ignore

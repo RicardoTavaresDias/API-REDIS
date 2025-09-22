@@ -2,6 +2,7 @@ import { Prisma, Product, User } from "@prisma/client";
 import { Repository } from "./Repository";
 import prisma from "@/lib/prisma";
 import { ListProductUserType, ProductType } from "@/types/TProducts";
+import { AppError } from "@/utils/AppError";
 
 class ProductRepository extends Repository<Prisma.ProductDelegate, Product, ProductType> {
   constructor () {
@@ -23,7 +24,7 @@ class ProductRepository extends Repository<Prisma.ProductDelegate, Product, Prod
     })
 
     if (result.length === 0) {
-      throw new Error("Usuario não encontrado para lista produtos")
+      throw new AppError("Usuario não encontrado para lista produtos", 404)
     }
 
     const user = result[0].user as User

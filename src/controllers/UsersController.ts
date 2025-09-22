@@ -14,23 +14,18 @@ class UserController extends Controller<User, UserType, TUpdateUserUser, ICreate
   }
 
   public searchUser = async (request: Request, response: Response) => {
-    try {
-      const searchSchema = searchUserSchema.safeParse(request.query)
-      if (!searchSchema.success) {
-        return response.status(400).json({ message: searchSchema.error.flatten().fieldErrors })
-      }
-
-      const result = await this.repositoryUser.search(searchSchema.data)
-      console.log(result)
-      if(!result?.length) {
-        return response.status(400).json({ message: "Usuario não encontrado." })
-      }
-
-      response.status(200).json(result)
-    } catch (error) {
-      console.log(error)
-      response.status(500).json({ message: error })
+    const searchSchema = searchUserSchema.safeParse(request.query)
+    if (!searchSchema.success) {
+      return response.status(400).json({ message: searchSchema.error.flatten().fieldErrors })
     }
+
+    const result = await this.repositoryUser.search(searchSchema.data)
+    console.log(result)
+    if(!result?.length) {
+      return response.status(400).json({ message: "Usuario não encontrado." })
+    }
+
+    response.status(200).json(result)
   }
 }
 

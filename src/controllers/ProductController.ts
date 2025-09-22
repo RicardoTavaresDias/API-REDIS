@@ -14,23 +14,15 @@ class ProductController extends Controller<Product, ProductType, TUpdateProduct,
   }
 
   public listProduct = async (request: Request, response: Response) => {
-    try {
-      const nameSchema = nameUSerSchema.safeParse(request.query)
-      if (!nameSchema.success) {
-        return response.status(400).json({ message: nameSchema.error.flatten().fieldErrors })
-      }
-
-      const { name } = nameSchema.data as NameUserType
-
-      const result = await this.repositoryProduct.listProductsUser(name)
-      response.status(200).json(result)
-    } catch (error) {
-      if (error instanceof Error) {
-        return response.status(404).json({ message: error.message })
-      }
-      
-      response.status(500).json({ message: error })
+    const nameSchema = nameUSerSchema.safeParse(request.query)
+    if (!nameSchema.success) {
+      return response.status(400).json({ message: nameSchema.error.flatten().fieldErrors })
     }
+
+    const { name } = nameSchema.data as NameUserType
+
+    const result = await this.repositoryProduct.listProductsUser(name)
+    response.status(200).json(result)
   }
 }
 
